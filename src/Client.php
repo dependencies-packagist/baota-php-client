@@ -371,7 +371,7 @@ class Client
     /**
      * 设置网站到期时间
      *
-     * @param int    $id   网站ID
+     * @param int    $id   网站 ID
      * @param string $date 网站到期时间 格式：2019-01-01，永久：0000-00-00
      *
      * @return array
@@ -387,7 +387,7 @@ class Client
     /**
      * 修改网站备注
      *
-     * @param int    $id 网站ID
+     * @param int    $id 网站 ID
      * @param string $ps 网站备注
      *
      * @return array
@@ -403,7 +403,7 @@ class Client
     /**
      * 获取网站备份列表
      *
-     * @param int    $id    网站ID
+     * @param int    $id    网站 ID
      * @param string $page  当前分页
      * @param string $limit 每页取出的数据行数
      * @param string $type  备份类型 目前固定为0
@@ -454,7 +454,7 @@ class Client
     /**
      * 获取网站域名列表
      *
-     * @param int     $id   网站ID
+     * @param int     $id   网站 ID
      * @param boolean $list 固定传 true
      *
      * @return array
@@ -535,7 +535,7 @@ class Client
     /**
      * 添加域名
      *
-     * @param int    $id      网站ID
+     * @param int    $id      网站 ID
      * @param string $webname 网站名称
      * @param string $domain  要添加的域名:端口 80 端口不必构造端口,多个域名用换行符隔开
      *
@@ -553,7 +553,7 @@ class Client
     /**
      * 删除网站域名
      *
-     * @param int    $id      网站ID
+     * @param int    $id      网站 ID
      * @param string $webname 网站名
      * @param string $domain  网站域名
      * @param int    $port    网站域名端口
@@ -567,6 +567,570 @@ class Client
             'webname' => $webname,
             'domain'  => $domain,
             'port'    => $port,
+        ]);
+    }
+
+    /**
+     * 获取网站日志
+     *
+     * @param string $siteName 网站名
+     *
+     * @return array
+     */
+    public function getSiteLogs(string $siteName): array
+    {
+        return $this->request('/site?action=GetSiteLogs', [
+            'siteName' => $siteName,
+        ]);
+    }
+
+    /**
+     * 获取网站盗链状态及规则信息
+     *
+     * @param int    $id   网站 ID
+     * @param string $name 网站名
+     *
+     * @return array
+     */
+    public function getSecurity(int $id, string $name): array
+    {
+        return $this->request('/site?action=GetSecurity', [
+            'id'   => $id,
+            'name' => $name,
+        ]);
+    }
+
+    /**
+     * 设置网站盗链状态及规则信息
+     *
+     * @param int    $id      网站 ID
+     * @param string $name    网站名
+     * @param string $fix     URL后缀
+     * @param string $domains 许可域名
+     * @param string $status  状态
+     *
+     * @return array
+     */
+    public function setSecurity(int $id, string $name, string $fix, string $domains, string $status): array
+    {
+        return $this->request('/site?action=SetSecurity', [
+            'id'      => $id,
+            'name'    => $name,
+            'fix'     => $fix,
+            'domains' => $domains,
+            'status'  => $status,
+        ]);
+    }
+
+    /**
+     * 获取SSL状态及证书信息
+     *
+     * @param string $siteName 域名（纯域名）
+     *
+     * @return array
+     */
+    public function getSSL(string $siteName): array
+    {
+        return $this->request('/site?action=GetSSL', [
+            'siteName' => $siteName,
+        ]);
+    }
+
+    /**
+     * 设置SSL域名证书
+     *
+     * @param string $type     类型
+     * @param string $siteName 网站名
+     * @param string $key      证书key
+     * @param string $csr      证书PEM
+     *
+     * @return array
+     */
+    public function setSSL(string $type, string $siteName, string $key, string $csr): array
+    {
+        return $this->request('/site?action=SetSSL', [
+            'type'     => $type,
+            'siteName' => $siteName,
+            'key'      => $key,
+            'csr'      => $csr,
+        ]);
+    }
+
+    /**
+     * 关闭SSL
+     *
+     * @param string $updateOf 修改状态码
+     * @param string $siteName 域名(纯域名)
+     *
+     * @return array
+     */
+    public function closeSSLConf(string $updateOf, string $siteName): array
+    {
+        return $this->request('/site?action=CloseSSLConf', [
+            'updateOf' => $updateOf,
+            'siteName' => $siteName,
+        ]);
+    }
+
+    /**
+     * 开启强制HTTPS
+     *
+     * @param string $siteName 网站域名（纯域名）
+     *
+     * @return array
+     */
+    public function httpToHttps(string $siteName): array
+    {
+        return $this->request('/site?action=HttpToHttps', [
+            'siteName' => $siteName,
+        ]);
+    }
+
+    /**
+     * 关闭强制HTTPS
+     *
+     * @param string $siteName 域名(纯域名)
+     *
+     * @return array
+     */
+    public function closeToHttps(string $siteName): array
+    {
+        return $this->request('/site?action=CloseToHttps', [
+            'siteName' => $siteName,
+        ]);
+    }
+
+    /**
+     * 获取网站默认文件
+     *
+     * @param int $id 网站 ID
+     *
+     * @return array
+     */
+    public function webGetIndex(int $id): array
+    {
+        return $this->request('/site?action=GetIndex', [
+            'id' => $id,
+        ]);
+    }
+
+    /**
+     * 设置网站默认文件
+     *
+     * @param int    $id    网站 ID
+     * @param string $index 内容
+     *
+     * @return array
+     */
+    public function webSetIndex(int $id, string $index): array
+    {
+        return $this->request('/site?action=SetIndex', [
+            'id'    => $id,
+            'Index' => $index,
+        ]);
+    }
+
+    /**
+     * 获取网站流量限制信息
+     *
+     * @param int $id 网站 ID
+     *
+     * @return array
+     */
+    public function getLimitNet(int $id): array
+    {
+        return $this->request('/site?action=GetLimitNet', [
+            'id' => $id,
+        ]);
+    }
+
+    /**
+     * 设置网站流量限制信息
+     *
+     * @param int    $id         网站 ID
+     * @param string $perserver  并发限制
+     * @param string $perip      单 IP 限制
+     * @param string $limit_rate 流量限制
+     *
+     * @return array
+     */
+    public function setLimitNet(int $id, string $perserver, string $perip, string $limit_rate): array
+    {
+        return $this->request('/site?action=SetLimitNet', [
+            'id'         => $id,
+            'perserver'  => $perserver,
+            'perip'      => $perip,
+            'limit_rate' => $limit_rate,
+        ]);
+    }
+
+    /**
+     * 关闭网站流量限制
+     *
+     * @param int $id 网站 ID
+     *
+     * @return array
+     */
+    public function closeLimitNet(int $id): array
+    {
+        return $this->request('/site?action=CloseLimitNet', [
+            'id' => $id,
+        ]);
+    }
+
+    /**
+     * 获取网站 301 重定向信息
+     *
+     * @param string $siteName 网站名
+     *
+     * @return array
+     */
+    public function get301Status(string $siteName): array
+    {
+        return $this->request('/site?action=Get301Status', [
+            'siteName' => $siteName,
+        ]);
+    }
+
+    /**
+     * 设置网站 301 重定向信息
+     *
+     * @param string $siteName  网站名
+     * @param string $toDomain  目标 Url
+     * @param string $srcDomain 来自 Url
+     * @param string $type      类型
+     *
+     * @return array
+     */
+    public function set301Status(string $siteName, string $toDomain, string $srcDomain, string $type): array
+    {
+        return $this->request('/site?action=Set301Status', [
+            'siteName'  => $siteName,
+            'toDomain'  => $toDomain,
+            'srcDomain' => $srcDomain,
+            'type'      => $type,
+        ]);
+    }
+
+    /**
+     * 获取可选的预定义伪静态列表
+     *
+     * @param string $siteName 网站名
+     *
+     * @return array
+     */
+    public function getRewriteList(string $siteName): array
+    {
+        return $this->request('/site?action=GetRewriteList', [
+            'siteName' => $siteName,
+        ]);
+    }
+
+    /**
+     * 获取预置伪静态规则内容（文件内容）
+     *
+     * @param string $path 规则名
+     * @param int    $type 0->获取内置伪静态规则；1->获取当前站点伪静态规则
+     *
+     * @return array
+     */
+    public function getFileBody(string $path, int $type = 0): array
+    {
+        $path_dir = $type ? 'vhost/rewrite' : 'rewrite/nginx';
+
+        // // 获取当前站点伪静态规则
+        // /www/server/panel/vhost/rewrite/user_hvVBT_1.test.com.conf
+        // // 获取内置伪静态规则
+        // /www/server/panel/rewrite/nginx/EmpireCMS.conf
+        // // 保存伪静态规则到站点
+        // /www/server/panel/vhost/rewrite/user_hvVBT_1.test.com.conf
+        // /www/server/panel/rewrite/nginx/typecho.conf
+        $path = '/www/server/panel/' . $path_dir . '/' . $path . '.conf';
+        return $this->request('/files?action=GetFileBody', [
+            'path' => $path,
+        ]);
+    }
+
+    /**
+     * 保存伪静态规则内容(保存文件内容)
+     *
+     * @param string $path     规则名
+     * @param string $data     规则内容
+     * @param string $encoding 规则编码强转utf-8
+     * @param int    $type     0->系统默认路径；1->自定义全路径
+     *
+     * @return array
+     */
+    public function saveFileBody(string $path, string $data, string $encoding = 'utf-8', int $type = 0): array
+    {
+        if ($type) {
+            $path_dir = $path;
+        } else {
+            $path_dir = '/www/server/panel/vhost/rewrite/' . $path . '.conf';
+        }
+        return $this->request('/files?action=SaveFileBody', [
+            'path'     => $path_dir,
+            'data'     => $data,
+            'encoding' => $encoding,
+        ]);
+    }
+
+    /**
+     * 获取网站反代信息及状态
+     *
+     * @param string $siteName
+     *
+     * @return array
+     */
+    public function getProxyList(string $siteName): array
+    {
+        return $this->request('/site?action=GetProxyList', [
+            'siteName' => $siteName,
+        ]);
+    }
+
+    /**
+     * 添加网站反代信息
+     *
+     * @param string $cache     是否缓存
+     * @param string $proxyname 代理名称
+     * @param string $cachetime 缓存时长 /小时
+     * @param string $proxydir  代理目录
+     * @param string $proxysite 反代 URL
+     * @param string $todomain  目标域名
+     * @param string $advanced  高级功能：开启代理目录
+     * @param string $sitename  网站名
+     * @param string $subfilter 文本替换json格式[{"sub1":"百度","sub2":"白底"},{"sub1":"","sub2":""}]
+     * @param int    $type      开启或关闭 0关;1开
+     *
+     * @return array
+     */
+    public function createProxy(
+        string $cache,
+        string $proxyname,
+        string $cachetime,
+        string $proxydir,
+        string $proxysite,
+        string $todomain,
+        string $advanced,
+        string $sitename,
+        string $subfilter,
+        int    $type
+    ): array
+    {
+        return $this->request('/site?action=CreateProxy', [
+            'cache'     => $cache,
+            'proxyname' => $proxyname,
+            'cachetime' => $cachetime,
+            'proxydir'  => $proxydir,
+            'proxysite' => $proxysite,
+            'todomain'  => $todomain,
+            'advanced'  => $advanced,
+            'sitename'  => $sitename,
+            'subfilter' => $subfilter,
+            'type'      => $type,
+        ]);
+    }
+
+    /**
+     * 修改网站反代信息
+     *
+     * @param string $cache     是否缓存
+     * @param string $proxyname 代理名称
+     * @param string $cachetime 缓存时长 /小时
+     * @param string $proxydir  代理目录
+     * @param string $proxysite 反代URL
+     * @param string $todomain  目标域名
+     * @param string $advanced  高级功能：开启代理目录
+     * @param string $sitename  网站名
+     * @param string $subfilter 文本替换json格式[{"sub1":"百度","sub2":"白底"},{"sub1":"","sub2":""}]
+     * @param int    $type      开启或关闭 0关;1开
+     *
+     * @return array
+     */
+    public function modifyProxy(
+        string $cache,
+        string $proxyname,
+        string $cachetime,
+        string $proxydir,
+        string $proxysite,
+        string $todomain,
+        string $advanced,
+        string $sitename,
+        string $subfilter,
+        int    $type
+    ): array
+    {
+        return $this->request('/site?action=ModifyProxy', [
+            'cache'     => $cache,
+            'proxyname' => $proxyname,
+            'cachetime' => $cachetime,
+            'proxydir'  => $proxydir,
+            'proxysite' => $proxysite,
+            'todomain'  => $todomain,
+            'advanced'  => $advanced,
+            'sitename'  => $sitename,
+            'subfilter' => $subfilter,
+            'type'      => $type,
+        ]);
+    }
+
+    /**
+     * 获取网站 FTP 列表
+     *
+     * @param string $page   当前分页
+     * @param string $limit  取出的数据行数
+     * @param string $type   分类标识 -1: 分部分类 0: 默认分类
+     * @param string $order  排序规则 使用 id 降序：id desc 使用名称升序：name desc
+     * @param string $tojs   分页 JS 回调,若不传则构造 URI 分页连接
+     * @param string $search 搜索内容
+     *
+     * @return array
+     */
+    public function webFtpList(string $page = '1', string $limit = '15', string $type = '-1', string $order = 'id desc', string $tojs = '', string $search = ''): array
+    {
+        return $this->request('/data?action=getData&table=ftps', [
+            'p'      => $page,
+            'limit'  => $limit,
+            'type'   => $type,
+            'order'  => $order,
+            'tojs'   => $tojs,
+            'search' => $search,
+        ]);
+    }
+
+    /**
+     * 修改 FTP 账号密码
+     *
+     * @param int    $id
+     * @param string $ftp_username 用户名
+     * @param string $new_password 密码
+     *
+     * @return array
+     */
+    public function setUserPassword(int $id, string $ftp_username, string $new_password): array
+    {
+        return $this->request('/ftp?action=SetUserPassword', [
+            'id'           => $id,
+            'ftp_username' => $ftp_username,
+            'new_password' => $new_password,
+        ]);
+    }
+
+    /**
+     * 启用/禁用 FTP
+     *
+     * @param int    $id
+     * @param string $username 用户名
+     * @param int    $status   状态 0->关闭;1->开启
+     *
+     * @return array
+     */
+    public function setStatus(int $id, string $username, int $status): array
+    {
+        return $this->request('/ftp?action=SetStatus', [
+            'id'       => $id,
+            'username' => $username,
+            'status'   => $status,
+        ]);
+    }
+
+    /**
+     * 获取网站 SQL 列表
+     *
+     * @param string $page   当前分页
+     * @param string $limit  取出的数据行数
+     * @param string $type   分类标识 -1: 分部分类 0: 默认分类
+     * @param string $order  排序规则 使用 id 降序：id desc 使用名称升序：name desc
+     * @param string $tojs   分页 JS 回调,若不传则构造 URI 分页连接
+     * @param string $search 搜索内容
+     *
+     * @return array
+     */
+    public function webSqlList(string $page = '1', string $limit = '15', string $type = '-1', string $order = 'id desc', string $tojs = '', string $search = ''): array
+    {
+        return $this->request('/data?action=getData&table=databases', [
+            'p'      => $page,
+            'limit'  => $limit,
+            'type'   => $type,
+            'order'  => $order,
+            'tojs'   => $tojs,
+            'search' => $search,
+        ]);
+    }
+
+    /**
+     * 修改 SQL 账号密码
+     *
+     * @param int    $id
+     * @param string $name     用户名
+     * @param string $password 密码
+     *
+     * @return array
+     */
+    public function resDatabasePass(int $id, string $name, string $password): array
+    {
+        return $this->request('/database?action=ResDatabasePassword', [
+            'id'       => $id,
+            'name'     => $name,
+            'password' => $password,
+        ]);
+    }
+
+    /**
+     * 备份数据库
+     *
+     * @param int $id 数据库列表 ID
+     *
+     * @return array
+     */
+    public function SQLToBackup(int $id): array
+    {
+        return $this->request('/database?action=ToBackup', [
+            'id' => $id,
+        ]);
+    }
+
+    /**
+     * 删除数据库备份
+     *
+     * @param int $id 数据库备份 ID
+     *
+     * @return array
+     */
+    public function SQLDelBackup(int $id): array
+    {
+        return $this->request('/database?action=DelBackup', [
+            'id' => $id,
+        ]);
+    }
+
+    /**
+     * 宝塔一键部署列表
+     *
+     * @param int    $type
+     * @param string $search 搜索关键词
+     *
+     * @return array
+     */
+    public function deployment(int $type = 0, string $search = ''): array
+    {
+        return $this->request("/deployment?action=GetList&type={$type}" . ($search ? "&search={$search}" : ''));
+    }
+
+    /**
+     * 宝塔一键部署执行
+     *
+     * @param string $dname       部署程序名
+     * @param string $site_name   部署到网站名
+     * @param string $php_version PHP版本
+     */
+    public function setupPackage(string $dname, string $site_name, string $php_version): array
+    {
+        return $this->request('/deployment?action=SetupPackage', [
+            'dname'       => $dname,
+            'site_name'   => $site_name,
+            'php_version' => $php_version,
         ]);
     }
 
