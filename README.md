@@ -19,9 +19,21 @@ composer require baota/client
 ```php
 use BaoTa\Client;
 
-$bt     = new Client(bt_uri: 'http://127.0.0.1:8888', bt_key: 'xxxxxxxxxxxxxxxx');
-$system = $bt->getSystemTotal();
-echo $system['data']['system'];
+$bt       = new Client(bt_uri: 'http://127.0.0.1:8888', bt_key: 'xxxxxxxxxxxxxxxx');
+$response = $bt->getSystemTotal();
+var_dump($response);
+```
+
+```php
+use BaoTa\Client;
+
+$bt       = new Client(bt_uri: 'http://127.0.0.1:8888', bt_key: 'xxxxxxxxxxxxxxxx');
+$response = $bt->request('/plugin?action=a&name=deployment&s=SetupPackage', [
+    'dname'       => $dname,
+    'site_name'   => $site_name,
+    'php_version' => $php_version,
+]);
+var_dump($response);
 ```
 
 ## Methods
