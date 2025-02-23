@@ -53,7 +53,7 @@ class Client
      *
      * @return array
      */
-    protected function request(string $path, array $data = []): array
+    public function request(string $path, array $data = []): array
     {
         $client = new Http([
             'base_uri' => $this->bt_uri,
